@@ -104,7 +104,7 @@ variable "aurora_free_storage_threshold_bytes" {
   description = "Free storage threshold for Aurora (bytes)"
   type        = number
   # Default: 10 GiB
-  default     = 10 * 1024 * 1024 * 1024
+  default = 10 * 1024 * 1024 * 1024
 }
 
 variable "dynamodb_throttled_requests_threshold" {

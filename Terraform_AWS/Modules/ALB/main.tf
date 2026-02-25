@@ -5,6 +5,7 @@ resource "aws_security_group" "alb_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description = "Allow HTTPS traffic from the internet"
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -12,6 +13,7 @@ resource "aws_security_group" "alb_sg" {
   }
 
   egress {
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -27,12 +29,12 @@ resource "aws_security_group" "alb_sg" {
 
 # Application Load Balancer
 resource "aws_lb" "main" {
-  name               = "${var.project_name}-${var.environment}-ecs-alb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = var.public_subnet_ids
-  enable_deletion_protection = false
+  name                       = "${var.project_name}-${var.environment}-ecs-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb_sg.id]
+  subnets                    = var.public_subnet_ids
+  enable_deletion_protection = true
 
   tags = {
     Name        = "${var.project_name}-${var.environment}-ecs-alb"
@@ -53,7 +55,7 @@ resource "aws_lb_target_group" "main" {
     healthy_threshold   = 2
     interval            = 30
     matcher             = "200"
-    path                = "/health" 
+    path                = "/health"
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = 5
@@ -76,6 +78,10 @@ resource "aws_acm_certificate" "cert" {
     Name        = "${var.project_name}-${var.environment}-cert"
     Environment = var.environment
     Project     = var.project_name
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

@@ -53,11 +53,11 @@ resource "aws_ecs_task_definition" "main" {
         }
       ]
       environment = [
-      {
-        name  = "DB_ENDPOINT"
-        value = var.db_endpoint
-      }
-      # ...other environment variables...
+        {
+          name  = "DB_ENDPOINT"
+          value = var.db_endpoint
+        }
+        # ...other environment variables...
       ]
       essential = true
       logConfiguration = {
@@ -84,13 +84,15 @@ resource "aws_security_group" "ecs_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
+    description = "Allow ECS service traffic within VPC"
     from_port   = var.container_port
     to_port     = var.container_port
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.selected.cidr_block] 
+    cidr_blocks = [data.aws_vpc.selected.cidr_block]
   }
 
   egress {
+    description = "Allow outbound traffic from ECS tasks"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"

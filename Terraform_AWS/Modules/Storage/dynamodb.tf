@@ -13,6 +13,10 @@ resource "aws_dynamodb_table" "main" {
     kms_key_arn = aws_kms_key.data_at_rest.arn
   }
 
+  point_in_time_recovery {
+    enabled = true
+  }
+
   tags = {
     Environment = var.environment
     Project     = var.project_name
