@@ -9,7 +9,10 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region     = "us-east-1"
+  access_key = "test"
+  secret_key = "test"
+  token      = "test"
 
   skip_credentials_validation = true
   skip_requesting_account_id  = true

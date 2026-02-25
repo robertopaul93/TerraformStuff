@@ -98,6 +98,9 @@ jobs:
         with:
           terraform_version: 1.7.0
 
+      - name: Terraform init (no backend)
+        run: terraform init -backend=false
+
       - name: Run terraform test
         run: terraform test
 
