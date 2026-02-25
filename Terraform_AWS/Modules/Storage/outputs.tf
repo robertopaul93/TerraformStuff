@@ -14,6 +14,11 @@ output "aurora_cluster_id" {
   value       = aws_rds_cluster.aurora.id
 }
 
+output "aurora_backup_retention_period" {
+  description = "Backup retention period for the Aurora cluster"
+  value       = aws_rds_cluster.aurora.backup_retention_period
+}
+
 output "aurora_security_group_id" {
   value = aws_security_group.aurora.id
 }
@@ -26,10 +31,10 @@ output "db_subnet_group_name" {
 # DynamoDB outputs
 output "dynamodb_table_arn" {
   description = "ARN of the DynamoDB table"
-  value       = aws_dynamodb_table.main.arn
+  value       = length(aws_dynamodb_table.main) > 0 ? aws_dynamodb_table.main[0].arn : null
 }
 
 output "dynamodb_table_name" {
   description = "Name of the DynamoDB table"
-  value       = aws_dynamodb_table.main.name
+  value       = length(aws_dynamodb_table.main) > 0 ? aws_dynamodb_table.main[0].name : null
 }

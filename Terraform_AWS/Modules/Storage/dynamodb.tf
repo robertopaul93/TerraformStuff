@@ -1,4 +1,6 @@
 resource "aws_dynamodb_table" "main" {
+  count = var.enable_dynamodb ? 1 : 0
+
   name         = var.dynamodb_table_name
   billing_mode = var.dynamodb_billing_mode
   hash_key     = var.dynamodb_hash_key

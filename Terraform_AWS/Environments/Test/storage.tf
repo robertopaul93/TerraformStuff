@@ -6,7 +6,8 @@ module "storage" {
   account_id                 = "000000000000"
   aurora_master_username     = var.aurora_master_username
   aurora_master_password     = var.aurora_master_password
-  aurora_allowed_cidr_blocks = module.networking.vpc_cidr
+  aurora_allowed_cidr_blocks = [module.networking.vpc_cidr]
+  enable_dynamodb            = var.enable_dynamodb
   vpc_security_group_ids     = [module.storage.aurora_security_group_id]
   private_subnet_ids         = module.networking.private_subnet_ids
   vpc_id                     = module.networking.vpc_id

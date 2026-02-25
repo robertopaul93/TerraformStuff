@@ -33,3 +33,9 @@ variable "dynamodb_hash_key" {
   type        = string
   default     = "id"
 }
+
+variable "enable_dynamodb" {
+  description = "Whether to create the DynamoDB table (tests can disable)"
+  type        = bool
+  default     = true
+}

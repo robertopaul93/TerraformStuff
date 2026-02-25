@@ -50,6 +50,12 @@ variable "aurora_allowed_cidr_blocks" {
   type        = list(string)
 }
 
+variable "enable_dynamodb" {
+  description = "Whether to create the DynamoDB table"
+  type        = bool
+  default     = true
+}
+
 variable "vpc_security_group_ids" {
   description = "VPC security group IDs"
   type        = list(string)
