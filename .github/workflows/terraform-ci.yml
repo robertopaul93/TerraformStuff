@@ -39,6 +39,10 @@ jobs:
         working-directory: Terraform_AWS
         run: terraform fmt -check -recursive
 
+      - name: Terraform init (Test env, no backend)
+        working-directory: Terraform_AWS/Environments/Test
+        run: terraform init -backend=false
+
       - name: Terraform validate (Test env)
         working-directory: Terraform_AWS/Environments/Test
         run: terraform validate
