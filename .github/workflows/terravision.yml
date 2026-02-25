@@ -1,0 +1,33 @@
+name: TerraVision Diagrams
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terravision-diagrams:
+    name: Generate Terraform architecture diagrams
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_aurora_master_password: ${{ secrets.TF_AURORA_MASTER_PASSWORD }}
+      AWS_EC2_METADATA_DISABLED: "true"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Run TerraVision
+        uses: patrickchugh/terravision-action@v1
+        with:
+          source: Terraform_AWS/Environments/Test
+          outfile: terravision/architecture-test
+          format: png
+
+      - name: Upload diagrams artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terravision-architecture-test
+          path: terravision/architecture-test.*
