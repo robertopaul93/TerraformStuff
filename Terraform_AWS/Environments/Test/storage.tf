@@ -3,6 +3,7 @@ module "storage" {
   source                     = "../../Modules/Storage"
   environment                = "test"
   project_name               = "dn-test"
+  account_id                 = "000000000000"
   aurora_master_username     = var.aurora_master_username
   aurora_master_password     = var.aurora_master_password
   aurora_allowed_cidr_blocks = module.networking.vpc_cidr

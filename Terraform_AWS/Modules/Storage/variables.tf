@@ -16,13 +16,6 @@ variable "private_subnet_ids" {
   type = list(string)
 }
 
-# Aurora Postgres variables
-variable "aurora_cluster_identifier" {
-  description = "Identifier for the Aurora cluster"
-  type        = string
-  default     = "aurora-postgres"
-}
-
 variable "aurora_master_username" {
   description = "Master username for Aurora"
   type        = string
@@ -65,6 +58,12 @@ variable "vpc_security_group_ids" {
 variable "db_subnet_group_name" {
   description = "DB subnet group name"
   type        = string
+}
+
+variable "account_id" {
+  description = "AWS account ID used in KMS key policy"
+  type        = string
+  default     = "000000000000"
 }
 
 # DynamoDB variables

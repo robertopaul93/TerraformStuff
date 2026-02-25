@@ -72,11 +72,6 @@ resource "aws_ecs_task_definition" "main" {
   ])
 }
 
-# Data source to fetch VPC CIDR
-data "aws_vpc" "selected" {
-  id = var.vpc_id
-}
-
 # Security Group for ECS Service
 resource "aws_security_group" "ecs_sg" {
   name        = "${var.project_name}-${var.environment}-ecs-sg"
@@ -88,7 +83,7 @@ resource "aws_security_group" "ecs_sg" {
     from_port   = var.container_port
     to_port     = var.container_port
     protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.selected.cidr_block]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {

@@ -60,6 +60,9 @@ jobs:
     env:
       TF_VAR_aurora_master_password: ${{ secrets.TF_AURORA_MASTER_PASSWORD }}
       AWS_EC2_METADATA_DISABLED: "true"
+      AWS_ACCESS_KEY_ID: "dummy"
+      AWS_SECRET_ACCESS_KEY: "dummy"
+      AWS_DEFAULT_REGION: "us-east-1"
     defaults:
       run:
         working-directory: Terraform_AWS/Environments/Test

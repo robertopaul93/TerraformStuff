@@ -9,6 +9,7 @@ module "compute_test" {
   container_image  = "nginx:latest"
   container_port   = 80
   db_endpoint      = module.storage.aurora_cluster_endpoint
+  vpc_cidr         = module.networking.vpc_cidr
   cpu              = var.test_cpu
   memory           = var.test_memory
   desired_count    = 2

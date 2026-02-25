@@ -67,9 +67,6 @@ resource "aws_rds_cluster" "aurora" {
   }
 }
 
-# Caller identity used to build KMS key policy for this account
-data "aws_caller_identity" "current" {}
-
 # KMS key for encrypting Aurora and DynamoDB data at rest
 resource "aws_kms_key" "data_at_rest" {
   description             = "KMS key for encrypting Aurora and DynamoDB data"
@@ -83,7 +80,7 @@ resource "aws_kms_key" "data_at_rest" {
         Sid    = "Enable IAM User Permissions"
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+          AWS = "arn:aws:iam::${var.account_id}:root"
         }
         Action   = "kms:*"
         Resource = "*"

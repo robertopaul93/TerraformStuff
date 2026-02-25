@@ -4,6 +4,10 @@ variable "vpc_id" {
   type        = string
   description = "The VPC ID for the ECS service"
 }
+variable "vpc_cidr" {
+  type        = string
+  description = "CIDR block of the VPC for ECS security group ingress"
+}
 variable "subnet_ids" {
   type        = list(string)
   description = "List of subnet IDs for the ECS service"
