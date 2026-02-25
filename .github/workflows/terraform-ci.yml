@@ -1,0 +1,99 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  checkov:
+    name: Checkov security scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: Terraform_AWS
+          framework: terraform
+          skip-path: Terraform_AWS/Environments/Test/.terraform
+
+  lint:
+    name: Terraform fmt / validate / tflint
+    runs-on: ubuntu-latest
+    continue-on-error: true  # Optional: report failures but do not fail the whole workflow
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform fmt check (recursive)
+        working-directory: Terraform_AWS
+        run: terraform fmt -check -recursive
+
+      - name: Terraform validate (Test env)
+        working-directory: Terraform_AWS/Environments/Test
+        run: terraform validate
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+
+      - name: Run TFLint (recursive)
+        working-directory: Terraform_AWS
+        run: tflint --recursive
+
+  plan-test:
+    name: Terraform plan (unit-style test)
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_aurora_master_password: ${{ secrets.TF_AURORA_MASTER_PASSWORD }}
+      AWS_EC2_METADATA_DISABLED: "true"
+    defaults:
+      run:
+        working-directory: Terraform_AWS/Environments/Test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform init (no backend)
+        run: terraform init -backend=false
+
+      - name: Terraform plan (no refresh)
+        run: terraform plan -lock=false -input=false -refresh=false -no-color -out=tfplan
+
+      - name: Show plan
+        run: terraform show -no-color tfplan
+
+  python-moto-tests:
+    name: Python moto-based tests (placeholder)
+    if: ${{ false }}  # Enable and implement once Python/moto tests are added
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest moto[boto3]
+
+      - name: Run moto-based tests
+        run: pytest
+        working-directory: Terraform_AWS/tests/python
