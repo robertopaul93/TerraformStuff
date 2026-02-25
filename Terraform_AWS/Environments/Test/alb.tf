@@ -1,5 +1,5 @@
 module "alb_test" {
-  source             = "../../modules/ALB"
+  source             = "../../Modules/ALB"
   environment        = "test"
   project_name       = "dn-test"
   vpc_id             = module.networking.vpc_id

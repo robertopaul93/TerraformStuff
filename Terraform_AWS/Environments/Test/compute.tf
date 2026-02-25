@@ -1,5 +1,5 @@
 module "compute_test" {
-  source           = "../../modules/Compute"
+  source           = "../../Modules/Compute"
   environment      = "test"
   project_name     = "dn-test"
   vpc_id           = module.networking.vpc_id

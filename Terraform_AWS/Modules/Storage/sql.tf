@@ -59,7 +59,7 @@ resource "aws_rds_cluster" "aurora" {
     "upgrade",
   ]
   iam_database_authentication_enabled = true
-  kms_key_id              = aws_kms_key.data_at_rest.arn
+  kms_key_id                          = aws_kms_key.data_at_rest.arn
 
   tags = {
     Environment = var.environment
@@ -104,16 +104,16 @@ resource "aws_kms_alias" "data_at_rest_alias" {
 
 # Aurora cluster instances
 resource "aws_rds_cluster_instance" "aurora_instances" {
-  count               = var.aurora_instance_count
-  identifier          = "${var.project_name}-${var.environment}-aurora-instance-${count.index}"
-  cluster_identifier  = aws_rds_cluster.aurora.id
-  instance_class      = var.aurora_instance_class
-  engine              = aws_rds_cluster.aurora.engine
-  engine_version      = aws_rds_cluster.aurora.engine_version
-  publicly_accessible = false
-  auto_minor_version_upgrade = true
-  monitoring_interval        = 60
-  monitoring_role_arn        = aws_iam_role.rds_monitoring.arn
+  count                        = var.aurora_instance_count
+  identifier                   = "${var.project_name}-${var.environment}-aurora-instance-${count.index}"
+  cluster_identifier           = aws_rds_cluster.aurora.id
+  instance_class               = var.aurora_instance_class
+  engine                       = aws_rds_cluster.aurora.engine
+  engine_version               = aws_rds_cluster.aurora.engine_version
+  publicly_accessible          = false
+  auto_minor_version_upgrade   = true
+  monitoring_interval          = 60
+  monitoring_role_arn          = aws_iam_role.rds_monitoring.arn
   performance_insights_enabled = true
 
   tags = {

@@ -1,5 +1,5 @@
 module "monitoring" {
-  source = "../../modules/Monitoring"
+  source = "../../Modules/Monitoring"
 
   environment  = "test"
   project_name = "dn-test"

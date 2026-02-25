@@ -1,5 +1,5 @@
 module "networking" {
-  source = "../../modules/Networking"
+  source = "../../Modules/Networking"
 
   environment          = "test"
   project_name         = "dn-test"
